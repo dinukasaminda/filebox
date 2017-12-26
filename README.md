@@ -10,5 +10,5 @@ simply download this repo and <br>
 <p>5 ) visit url http://localhost:8080/ using any device which is connected same network you use to run nodejs server.</p>
 <p>6 ) download any files you want to copy</p>
 
-usage:
-  this server can use file share between pc and mobile phone without any application and data charge.
+<h4>usage:</h4>
+  <p><strong>this server can use file share between pc and mobile phone without any application and data charge.</strong></p>
