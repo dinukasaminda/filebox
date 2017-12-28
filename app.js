@@ -3,7 +3,7 @@ var formidable = require("formidable");
 var fs = require("fs");
 var path = require("path");
 var base64 = require("base-64");
-var folder_path = "./abcd_mynew_path/";
+var folder_path = "/abcd_mynew_path/";
 
 var params = function(req) {
   let q = req.url.split("?"),
@@ -40,7 +40,21 @@ http
       console.log("file download");
     } else if (req.method == "POST") {
       var form = new formidable.IncomingForm();
+      var form = new formidable.IncomingForm();
+
+      form.parse(req);
+
+      form.on("fileBegin", function(name, file) {
+        var newpath = folder_path + file.name;
+        file.path = __dirname + newpath;
+      });
+
+      form.on("file", function(name, file) {
+        console.log("Uploaded " + file.name);
+      });
+      /*
       form.parse(req, function(err, fields, files) {
+        console.log(files.filetoupload);
         var oldpath = files.filetoupload.path;
         var newpath = folder_path + files.filetoupload.name;
         fs.readFile(oldpath, function(err, data) {
@@ -63,16 +77,18 @@ http
           });
           res.end();
         });
-      });
+      });*/
     } else {
       res.writeHead(200, { "Content-Type": "text/html" });
-      res.write('<form action="" method="post" enctype="multipart/form-data">');
-      res.write('<input type="file" name="filetoupload"><br>');
+      res.write(
+        '<form action="" method="post" enctype="multipart/form-data" >'
+      );
+      res.write('<input type="file" name="filetoupload" multiple><br>');
       res.write('<input type="submit">');
       res.write("</form>");
       res.write("<h2> files:</h2>");
 
-      var items = fs.readdirSync(folder_path);
+      var items = fs.readdirSync("./" + folder_path);
       items.forEach(item => {
         var fname = "/down?file=" + base64.encode(item);
         var link1 =
